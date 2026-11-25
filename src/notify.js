@@ -1,6 +1,7 @@
 // Phone notifications through a Telegram bot. Everything here is optional:
 // without TELEGRAM_BOT_TOKEN nothing is sent and the app works as usual.
 
+import { L, shown } from '../public/i18n.js';
 export async function sendTelegram(env, chatId, text) {
   if (!env.TELEGRAM_BOT_TOKEN || !chatId) return false;
   try {
@@ -28,12 +29,12 @@ export async function notifyChange(ctx, resource, before, after) {
   const messages = [];
   if (after.owner && after.owner !== ctx.user.login && before?.owner !== after.owner) {
     const owner = users.find((u) => u.login === after.owner);
-    const due = after.due ? `\nСрок: ${after.due}` : '';
-    messages.push([owner, `📌 ${actor} назначил вам задачу:\n${after.title}${due}`]);
+    const due = after.due ? L(`\nСрок: ${after.due}`, `\nDue: ${after.due}`) : '';
+    messages.push([owner, L(`📌 ${actor} назначил вам задачу:\n${after.title}${due}`, `📌 ${actor} gave you a task:\n${after.title}${due}`)]);
   }
   if (after.status === 'Заблокировано' && before?.status !== 'Заблокировано') {
     for (const user of users.filter((u) => u.login !== ctx.user.login)) {
-      messages.push([user, `⛔ Блокер у задачи «${after.title}» (${actor})\n${after.note ?? ''}`.trim()]);
+      messages.push([user, L(`⛔ Блокер у задачи «${after.title}» (${actor})\n${after.note ?? ''}`, `⛔ Blocker on the task "${after.title}" (${actor})\n${after.note ?? ''}`).trim()]);
     }
   }
   const job = Promise.all(messages.map(([user, text]) => sendTelegram(ctx.env, user?.telegram_chat_id, text)));
@@ -46,13 +47,13 @@ const lines = (title, items, format) =>
 
 export function morningText(user, day) {
   const body = [
-    ...lines('🔥 Просрочено', day.tasks.overdue, (t) => `${t.title} (${t.due})`),
-    ...lines('📌 На сегодня', day.tasks.today, (t) => t.title),
-    ...lines('⛔ Заблокировано', day.tasks.blocked, (t) => t.title),
-    ...lines('🤝 Шаги по лидам', day.leads_due, (l) => `${l.company}: ${l.next_step ?? 'следующий шаг'}`),
-    ...lines('📅 События на неделе', day.events, (e) => `${e.date} ${e.time ?? ''} ${e.title}`),
+    ...lines(L('🔥 Просрочено', '🔥 Overdue'), day.tasks.overdue, (t) => `${t.title} (${t.due})`),
+    ...lines(L('📌 На сегодня', '📌 Today'), day.tasks.today, (t) => t.title),
+    ...lines(L('⛔ Заблокировано', '⛔ Blocked'), day.tasks.blocked, (t) => t.title),
+    ...lines(L('🤝 Шаги по лидам', '🤝 Lead steps'), day.leads_due, (l) => L(`${l.company}: ${l.next_step ?? 'следующий шаг'}`, `${l.company}: ${l.next_step ?? 'next step'}`)),
+    ...lines(L('📅 События на неделе', '📅 Events this week'), day.events, (e) => `${e.date} ${e.time ?? ''} ${e.title}`),
   ];
-  return [`Доброе утро, ${user.name}!`, ...(body.length ? body : ['\nСрочного нет.'])].join('\n');
+  return [L(`Доброе утро, ${user.name}!`, `Good morning, ${user.name}!`), ...(body.length ? body : [L('\nСрочного нет.', '\\nNothing urgent.')])].join('\n');
 }
 
 // kind: "morning" sends each person their day, "evening" reminds about the report.
@@ -64,7 +65,7 @@ export async function digest(ctx, kind, dashboard) {
     if (kind === 'evening' && !day.reports.missing.includes(user.login)) continue;
     const text = kind === 'morning'
       ? morningText(user, day)
-      : `${user.name}, отчёт дня ещё не сдан: что сделано, цифры, что мешает, план на завтра.`;
+      : L(`${user.name}, отчёт дня ещё не сдан: что сделано, цифры, что мешает, план на завтра.`, `${user.name}, the daily report is not sent yet: done, numbers, blockers, plan for tomorrow.`);
     if (await sendTelegram(ctx.env, user.telegram_chat_id, text)) sent += 1;
   }
   return sent;

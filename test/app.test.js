@@ -185,3 +185,18 @@ test('the web interface is served with a strict policy and no path escapes', asy
     assert.equal((await fetch(base + path)).status, 404, path);
   }
 });
+
+test('both languages: stored values stay, the screen translates them', async () => {
+  const { shown, setLanguage, LANG } = await import('../public/i18n.js');
+  const { resources } = await import('../src/schema.js');
+  const before = LANG;
+  setLanguage('en');
+  for (const resource of Object.values(resources)) {
+    for (const value of [resource.label, ...Object.values(resource.fields).flatMap((f) => [f.label, ...(f.options ?? [])])]) {
+      assert.doesNotMatch(shown(value), /[А-Яа-яЁё]/, value);
+    }
+  }
+  setLanguage('ru');
+  assert.equal(shown('Задачи'), 'Задачи');
+  setLanguage(before);
+});

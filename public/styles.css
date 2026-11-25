@@ -207,3 +207,6 @@ dialog .actions { display: flex; gap: 8px; padding: 12px 18px calc(12px + env(sa
   dialog { width: 100%; max-width: 100%; height: auto; max-height: 92%; margin: auto 0 0; border-left: 0; border-radius: 16px 16px 0 0 }
 }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important } }
+
+nav .lang { display: none; }
+@media (min-width: 901px) { nav .lang { display: block; margin: auto 0 8px; } nav .lang + .me { margin-top: 0; } }

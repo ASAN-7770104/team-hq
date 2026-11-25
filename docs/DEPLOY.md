@@ -1,57 +1,62 @@
-# Публикация на сервере (Cloudflare, бесплатный тариф)
+# Publishing on a server (Cloudflare, free plan)
 
-После этого штаб открывается с любого телефона, а Claude каждого участника подключается по своей ссылке. Лимиты бесплатного тарифа проверьте на сайте Cloudflare.
+**English** · [Русский](DEPLOY.ru.md)
 
-Команды выполняются в папке проекта.
+After this the workspace opens from any phone and each member's Claude connects through a personal link. Check the
+free plan limits on the Cloudflare site.
 
-1. Войти в Cloudflare (скачает инструмент `wrangler`):
+Run the commands in the project folder.
+
+1. Sign in to Cloudflare (downloads the `wrangler` tool):
 
    ```
    npx wrangler login
    ```
 
-2. Создать базу и скопировать из ответа `database_id`:
+2. Create the database and copy `database_id` from the answer:
 
    ```
    npx wrangler d1 create team-hq
    ```
 
-3. Скопировать `wrangler.toml.example` в `wrangler.toml` и вставить `database_id`.
+3. Copy `wrangler.toml.example` to `wrangler.toml` and paste `database_id`.
 
-4. Перенести данные и ключи из локальной базы. Если база лежит не в `data/hq.db`, сначала укажите путь в переменной `HQ_DB`.
+4. Move the data and keys from the local database. If it is not in `data/hq.db`, set the `HQ_DB` variable first.
 
    ```
    npm run export -- data/export.sql
    npx wrangler d1 execute team-hq --remote --file data/export.sql
    ```
 
-   Для пустого штаба вместо этого: `npx wrangler d1 migrations apply team-hq --remote`.
+   For an empty workspace run instead: `npx wrangler d1 migrations apply team-hq --remote`.
 
-5. Опубликовать:
+5. Publish:
 
    ```
    npx wrangler deploy
    ```
 
-   В ответе будет адрес вида `https://team-hq.ваше-имя.workers.dev`.
+   The answer contains an address like `https://team-hq.your-name.workers.dev`.
 
-6. Каждый открывает `адрес/#key=свой_ключ`, затем в меню браузера «Добавить на главный экран».
+6. Each member opens `address/#key=their_key`, then "Add to home screen" in the browser menu.
 
-7. Claude: в штабе «Настройки» → скопировать адрес коннектора → в Claude добавить custom connector.
+7. Claude: in the workspace open Settings, copy the connector address, and add it in Claude as a custom connector.
 
-## Уведомления в Telegram
+For English Telegram messages and MCP texts add `HQ_LANG = "en"` under `[vars]` in `wrangler.toml`.
 
-1. Создать бота у `@BotFather` и получить токен.
-2. `npx wrangler secret put TELEGRAM_BOT_TOKEN` и вставить токен, когда спросит. В файлы его не записывать.
-3. Каждый пишет боту любое сообщение.
-4. Открыть `https://api.telegram.org/bot<токен>/getUpdates`, найти `chat.id` каждого.
-5. Каждый вписывает свой `chat.id` в «Настройках».
+## Telegram notifications
 
-Уведомления: назначили задачу, появился блокер, сводка в 09:00, напоминание об отчёте в 21:00.
+1. Create a bot with `@BotFather` and get the token.
+2. Run `npx wrangler secret put TELEGRAM_BOT_TOKEN` and paste the token when asked. Do not write it into files.
+3. Each member writes any message to the bot.
+4. Open `https://api.telegram.org/bot<token>/getUpdates` and find each member's `chat.id`.
+5. Each member enters their `chat.id` in Settings.
 
-## Важно
+Notifications: a task was assigned, a blocker appeared, a 09:00 summary, a 21:00 report reminder.
 
-- После публикации работайте только на сервере: локальная база с ним не синхронизируется.
-- Ссылка с ключом и адрес коннектора дают полный доступ. Если утекли, выпустите новый ключ:
-  `npm run user -- --login ... --name ...`, затем перенесите таблицу `users` в D1.
-- Файл `data/export.sql` содержит рабочие данные. После переноса удалите его.
+## Important
+
+- After publishing work only on the server: the local database does not sync with it.
+- A key link and a connector address give full access. If one leaks, issue a new key with
+  `npm run user -- --login ... --name ...`, then move the `users` table to D1.
+- `data/export.sql` holds working data. Delete it after the transfer.

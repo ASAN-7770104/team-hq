@@ -1,5 +1,7 @@
 # Team HQ
 
+**English** · [Русский](README.ru.md)
+
 A small self-hosted workspace for a startup team: **tasks, CRM, calendar, daily reports, content and ideas**. Every teammate connects their own **Claude** through MCP and updates the board in plain language.
 
 ![Today screen](docs/today.png)
@@ -14,6 +16,7 @@ A small self-hosted workspace for a startup team: **tasks, CRM, calendar, daily 
 - **Telegram** notifications: new assignment, blocker, morning digest, evening report reminder
 - **Calendar feed** (`.ics`) for Google or Apple Calendar
 - **History** of changes; records are archived, never deleted
+- **English and Russian** interface with a switch; `HQ_LANG=en` or `ru` sets the language of Telegram messages and MCP texts. Statuses are stored once, in Russian, and translated on screen
 - **CSV and JSON import**
 
 ## Quick start
@@ -70,4 +73,4 @@ npm test
 
 ## Contributing
 
-Ideas for a first pull request: roles and permissions, comments on tasks, a monthly calendar grid, an English interface.
+Ideas for a first pull request: roles and permissions, comments on tasks, a monthly calendar grid, more interface languages.
