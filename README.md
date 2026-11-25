@@ -7,7 +7,8 @@ A small self-hosted workspace for a startup team: **tasks, CRM, calendar, daily 
 ## Features
 
 - **My day**: overdue and today's tasks, blockers, lead follow-ups, events, who has not reported yet
-- **Boards** by status with one-click moves, owner filter and search
+- **Boards and lists** by status with one-click moves, owner filter and search
+- **Team overview**: open and overdue work per person and who has sent today's report
 - **MCP server** (Streamable HTTP): `my_day`, `list_items`, `add_item`, `update_item`, `submit_report`, `who_is_who`
 - **Phone**: responsive interface that can be added to the home screen
 - **Telegram** notifications: new assignment, blocker, morning digest, evening report reminder
