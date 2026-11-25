@@ -1,0 +1,20 @@
+# Copy to wrangler.toml and put in your database id (see docs/DEPLOY.md).
+name = "team-hq"
+main = "src/worker.js"
+compatibility_date = "2026-11-01"
+
+[assets]
+directory = "./public"
+binding = "ASSETS"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "team-hq"
+database_id = "PASTE-YOUR-DATABASE-ID"
+
+[vars]
+UTC_OFFSET = "5"
+
+# UTC. 04:00 = 09:00 and 16:00 = 21:00 in Astana.
+[triggers]
+crons = ["0 4 * * *", "0 16 * * *"]
