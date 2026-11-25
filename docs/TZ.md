@@ -1,31 +1,35 @@
-# ТЗ: Team HQ, штаб команды
+# Specification: Team HQ
 
-## Задача
-Своё рабочее пространство для маленькой команды: задачи, CRM, календарь, отчёты дня, контент и идеи. Каждый участник подключает свой Claude и обновляет данные обычными словами. Открывается с телефона и ноутбука.
+**English** · [Русский](TZ.ru.md)
 
-## Пользователи
-Три основателя. У каждого свой ключ доступа и вид «Мой день».
+## Task
+An own workspace for a small team: tasks, CRM, calendar, daily reports, content and ideas. Each member connects
+their Claude and updates the data in plain words. Opens on a phone and a laptop.
 
-## Что входит в первую версию
-| № | Возможность | Готово, когда |
+## Users
+Three founders. Each has a personal access key and a "My day" view.
+
+## First version
+| # | Feature | Done when |
 |---|---|---|
-| 1 | Таблицы: задачи, лиды, события, отчёты, контент, идеи | можно добавить, изменить, отправить в архив |
-| 2 | «Мой день» | видно просроченное, сегодняшнее, блокеры, шаги по лидам, события, кто сдал отчёт |
-| 3 | Доски по статусам | статус меняется в один клик |
-| 4 | Claude (MCP) | «что у меня сегодня», добавить и обновить запись, сдать отчёт |
-| 5 | Телефон | интерфейс под узкий экран, значок на главном экране |
-| 6 | Уведомления в Telegram | назначили задачу, появился блокер, сводка утром, напоминание об отчёте вечером |
-| 7 | Календарь | подписка в Google или Apple Календаре |
-| 8 | История | видно, кто и что менял |
-| 9 | Перенос данных | импорт из CSV и JSON |
+| 1 | Tables: tasks, leads, events, reports, content, ideas | records can be added, changed and archived |
+| 2 | "My day" | overdue, today, blockers, lead steps, events and report status are visible |
+| 3 | Boards by status | status changes in one click |
+| 4 | Claude (MCP) | "what is on today", add and update a record, send a report |
+| 5 | Phone | narrow-screen interface, home screen icon |
+| 6 | Telegram notifications | task assigned, blocker, morning summary, evening report reminder |
+| 7 | Calendar | subscription in Google or Apple Calendar |
+| 8 | History | who changed what is visible |
+| 9 | Data transfer | import from CSV and JSON |
 
-## Не входит
-Вложения файлов, роли с разными правами, свой чат, мобильное приложение из магазина.
+## Out of scope
+File attachments, roles with different rights, own chat, a store mobile app.
 
-## Правила
-- Ничего не удаляется насовсем: запись уходит в архив.
-- Claude не может архивировать и удалять.
-- Рабочие данные и ключи не попадают в репозиторий.
+## Rules
+- Nothing is deleted for good: records are archived.
+- Claude cannot archive or delete.
+- Working data and keys never enter the repository.
 
-## Технически
-Node.js 24 без зависимостей, SQLite локально, Cloudflare Workers и D1 на сервере. Один и тот же код обработки запросов в обоих случаях.
+## Technology
+Node.js 24 with no dependencies, SQLite locally, Cloudflare Workers and D1 on a server. The same request-handling
+code in both cases.
