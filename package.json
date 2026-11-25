@@ -1,0 +1,19 @@
+{
+  "name": "team-hq",
+  "version": "1.0.0",
+  "description": "Self-hosted team workspace: tasks, CRM, calendar and daily reports that every teammate's Claude can read and update through MCP.",
+  "type": "module",
+  "license": "MIT",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "start": "node server/node.js",
+    "demo": "node scripts/seed-demo.js",
+    "user": "node scripts/add-user.js",
+    "import": "node scripts/import.js",
+    "export": "node scripts/export-sql.js",
+    "schema": "node scripts/gen-schema.js",
+    "test": "node --test"
+  }
+}
